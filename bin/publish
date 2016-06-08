@@ -2,14 +2,16 @@
 
 import optparse
 import sys
+import json
 
 import redis
 
 if __name__ == '__main__':
 
    parser = optparse.OptionParser()
-   parser.add_option("--host", dest="host", default="localhost", help="")
-   parser.add_option("--port", dest="port", default=6379, help="")
+   parser.add_option("--host", dest="host", default="localhost", help="The host of the Redis server to connect to")
+   parser.add_option("--port", dest="port", default=6379, help="The port of the Redis server to connect to")
+   parser.add_option("--json", dest="json", action="store_true", default=False, help="Serialize all input as JSON before publishing (default is False)")   
 
    (opts, args) = parser.parse_args()
 
@@ -18,5 +20,9 @@ if __name__ == '__main__':
    r = redis.Redis(host=opts.host, port=opts.port)
 
    for msg in args[1:]:
+
+      if options.json:
+         msg = json.dumps(msg)
+         
       r.publish(channel, msg)
 
