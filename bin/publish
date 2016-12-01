@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
    for msg in args[1:]:
 
-      if options.json:
+      if opts.json:
          msg = json.dumps(msg)
          
       r.publish(channel, msg)
